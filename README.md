@@ -12,7 +12,7 @@
 ## Spec
 
 | OP          | Stack           | Info            |
-|=============|=================|=================|
+|-------------|-----------------|-----------------|
 | OP_CONSTANT | {} -> {s1}      | Loads constant value onto stack |
 | OP_RETURN   | {} -> {} (HALT) | Returns last stack value or nil |
 
