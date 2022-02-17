@@ -1,6 +1,6 @@
 # tool macros
-CC := g++
-CCFLAGS :=
+CC := gcc
+CCFLAGS := -Wall
 DBGFLAGS := -g
 CCOBJFLAGS := $(CCFLAGS) -c
 
