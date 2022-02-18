@@ -1,3 +1,0 @@
-/home/chaos/桌面/HieroglyphVM/CMakeFiles/rebuild_cache.dir
-/home/chaos/桌面/HieroglyphVM/CMakeFiles/edit_cache.dir
-/home/chaos/桌面/HieroglyphVM/CMakeFiles/HieroglyphVM.dir
