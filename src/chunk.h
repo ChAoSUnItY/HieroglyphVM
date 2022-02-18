@@ -5,13 +5,14 @@
 #include "value.h"
 
 typedef enum {
+  T_BOOL,
+  T_BYTE,
   T_INT,
+  T_LONG
 } TypeCode;
 
 typedef enum {
-  OP_CONST,  // takes 1 byte
-  OP_CONST1, // takes 4 bytes
-  OP_CONST2, // takes 8 bytes
+  OP_CONST,
   OP_DUMP,
   OP_NEG,
   OP_ADD,
