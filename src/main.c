@@ -1,23 +1,24 @@
 #include <stdio.h>
 
-#include "common.h"
 #include "chunk.h"
+#include "common.h"
 #include "disassembler.h"
 #include "vm.h"
 
 int main(int argc, const char* argv[]) {
-    initVM();
+  initVM();
 
-    Chunk chunk;
-    initChunk(&chunk);
+  Chunk chunk;
+  initChunk(&chunk);
 
-    writeChunk1(&chunk, OP_CONSTANT, addConstant(&chunk, 1.2));
-    writeChunk0(&chunk, OP_RETURN);
+  u8 constant = addConstant(&chunk, 1.2);
+  writeChunk1(&chunk, OP_CONST, constant, 1);
+  writeChunk0(&chunk, OP_NEG, 2);
+  writeChunk0(&chunk, OP_DUMP, 3);
+  writeChunk0(&chunk, OP_RETURN, 4);
 
-    disassembleChunk(&chunk, "test chunk");
-    interpret(&chunk);
-    freeVM();
-    freeChunk(&chunk);
-    return 0;
-} 
-
+  interpret(&chunk);
+  freeVM();
+  freeChunk(&chunk);
+  return 0;
+}
