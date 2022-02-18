@@ -5,7 +5,9 @@
 #include "value.h"
 
 typedef enum {
-  OP_CONST,
+  OP_CONST,  // takes 1 byte
+  OP_CONST1, // takes 4 bytes
+  OP_CONST2, // takes 8 bytes
   OP_DUMP,
   OP_NEG,
   OP_ADD,
@@ -16,18 +18,21 @@ typedef enum {
   OP_RETURN,
 } OpCode;
 
+typedef enum {
+  ATTR_LINE = 0x80,
+} Attribute;
+
 typedef struct {
-  int count;
+  long count;
   int capacity;
   u8* code;
-  int* lines;
   ValueArray constants;
 } Chunk;
 
 void initChunk(Chunk* chunk);
 void freeChunk(Chunk* chunk);
-void writeChunk0(Chunk* chunk, u8 byte, int line);
-void writeChunk1(Chunk* chunk, u8 byte0, u8 byte1, int line);
+void writeChunk0(Chunk* chunk, u8 byte);
+void writeChunk1(Chunk* chunk, u8 byte0, u8 byte1);
 
 int addConstant(Chunk* chunk, Value value);
 
