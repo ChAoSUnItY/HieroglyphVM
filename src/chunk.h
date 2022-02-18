@@ -5,6 +5,10 @@
 #include "value.h"
 
 typedef enum {
+  T_INT,
+} TypeCode;
+
+typedef enum {
   OP_CONST,  // takes 1 byte
   OP_CONST1, // takes 4 bytes
   OP_CONST2, // takes 8 bytes
