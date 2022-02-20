@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "chunk.h"
+#include "loader.h"
 #include "common.h"
 #include "disassembler.h"
 #include "vm.h"
@@ -9,9 +9,8 @@ int main(int argc, const char* argv[]) {
   initVM();
 
   Chunk chunk;
-  initChunk(&chunk);
-
-  interpret(&chunk);
+  loadFile(&chunk, argv[1]);
+  
   freeVM();
   freeChunk(&chunk);
   return 0;

@@ -5,13 +5,6 @@
 #include "value.h"
 
 typedef enum {
-  T_BOOL,
-  T_BYTE,
-  T_INT,
-  T_LONG
-} TypeCode;
-
-typedef enum {
   OP_CONST,
   OP_DUMP,
   OP_NEG,

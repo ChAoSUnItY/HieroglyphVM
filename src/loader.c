@@ -1,27 +1,62 @@
+#include <stdlib.h>
+
 #include "loader.h"
 #include "memory.h"
 
-Chunk* loadFile(Chunk* chunk, const char* filePath) {
-  FILE* fileptr;
-  u8* buffer;
+Chunk *loadFile(Chunk *chunk, const char *filePath)
+{
+  FILE *fileptr;
   long filelen;
 
-  fileptr = fopen(".hvmc", "rb");
-  fseek(fileptr, 0, SEEK_END);
+  fileptr = fopen(filePath, "rb");
+  fseek(fileptr, 0L, SEEK_END);
   filelen = ftell(fileptr);
   rewind(fileptr);
 
-  buffer = (u8*)malloc(filelen * sizeof(u8));
-  fread(buffer, filelen, 1, fileptr);
+  u8 buffer[filelen * sizeof(u8)];
+  for (int i = 0; i < filelen; i++)
+  {
+    fread(buffer + i, 1, 1, fileptr);
+  }
   fclose(fileptr);
 
   initChunk(chunk);
 
-  chunk->count = filelen;
-  chunk->code = buffer;
+  // Load constants
+  for (int i = 0; i < filelen; i++)
+  {
+    if (i == 0)
+    { // Check magic numbers
+      if (buffer[0] == 'C' && buffer[1] == 'A' && buffer[2] == 'S' &&
+          buffer[3] == 'C')
+      {
+        i = 3; // Skip 4 bytes
+        continue;
+      }
+      else
+      {
+        fputs(stderr, "Missing magic number `CASC`");
+        exit(1);
+      }
+    }
 
-  while (chunk->capacity < chunk->count) {
-    GROW_CAP(chunk->capacity);
+    if (i == 4)
+    { // read constant length
+      int constantLen = _a_2btos(buffer, i);
+      i++;
+
+      for (int j = 0; j < constantLen; j++)
+      {
+        if (buffer[i] == 0x00)
+        { // INTEGER CONSTANT
+          i++;
+          int v = _a_4btoi(buffer, i);
+
+          addConstant(&chunk, INT_VAL(v));
+          break;
+        }
+      }
+    }
   }
 
   return chunk;
