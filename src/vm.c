@@ -1,16 +1,16 @@
-#include <stdarg.h>
 #include <math.h>
+#include <stdarg.h>
 #include <stdio.h>
 
 #include "common.h"
+#include "loader.h"
 #include "vm.h"
 
 VM vm;
 
 static void resetStack() { vm.stackTop = vm.stack; }
 
-static void runtimeError(const char *format, ...)
-{
+static void runtimeError(const char* format, ...) {
   va_list args;
   va_start(args, format);
   vfprintf(stderr, format, args);
@@ -26,42 +26,46 @@ void initVM() { resetStack(); }
 
 void freeVM() {}
 
-InterpretResult interpret(Chunk *chunk)
-{
+InterpretResult loadAndInterpret(u8 bytecode[], int len) {
+  initVM();
+
+  Chunk chunk;
+
+  loadFileFromBytecode(&chunk, bytecode, len);
+
+  InterpretResult result = interpret(&chunk);
+
+  freeChunk(&chunk);
+
+  return result;
+}
+
+InterpretResult interpret(Chunk* chunk) {
   vm.chunk = chunk;
   vm.ip = vm.chunk->code;
   return run();
 }
 
-void push(Value value)
-{
+void push(Value value) {
   *vm.stackTop = value;
   vm.stackTop++;
 }
 
-Value peek(int distance)
-{
-  return vm.stackTop[-1 - distance];
-}
+Value peek(int distance) { return vm.stackTop[-1 - distance]; }
 
-Value pop()
-{
+Value pop() {
   vm.stackTop--;
   return *vm.stackTop;
 }
 
-InterpretResult run()
-{
+InterpretResult run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
 
-  for (;;)
-  {
+  for (;;) {
     u8 instruction;
-    switch (instruction = READ_BYTE())
-    {
-    case OP_CONST:
-    {
+    switch (instruction = READ_BYTE()) {
+    case OP_CONST: {
       Value constant = READ_CONSTANT();
       push(constant);
       break;
@@ -72,8 +76,7 @@ InterpretResult run()
       }
       break;
     case OP_NEG:
-      if (!IS_INT(peek(0)))
-      {
+      if (!IS_INT(peek(0))) {
         runtimeError("Operand must be a number.");
         return INTERPRET_ERROR;
       }
@@ -114,12 +117,10 @@ InterpretResult run()
     //   push(fmod(v2, v1));
     //   break;
     // }
-    case OP_RETURN:
-    {
+    case OP_RETURN: {
       return INTERPRET_OK;
     }
-    case ATTR_LINE:
-    {
+    case ATTR_LINE: {
       vm.line = _4btoi(vm.ip);
     }
     }
