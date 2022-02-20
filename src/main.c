@@ -10,6 +10,8 @@ int main(int argc, const char* argv[]) {
 
   Chunk chunk;
   loadFile(&chunk, argv[1]);
+
+  interpret(&chunk);
   
   freeVM();
   freeChunk(&chunk);

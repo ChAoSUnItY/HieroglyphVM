@@ -67,7 +67,7 @@ CMAKE_BINARY_DIR = C:/Users/chaos/projects/FangYen/HieroglyphVM
 
 # Special rule for the target edit_cache
 edit_cache:
-	@echo "Running external command ..."
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
 	"C:/Program Files/CMake/bin/cmake-gui.exe" -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
@@ -77,7 +77,7 @@ edit_cache/fast: edit_cache
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
-	@echo "Running external command ..."
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
 	"C:/Program Files/CMake/bin/cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
@@ -116,6 +116,187 @@ depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+#=============================================================================
+# Target rules for targets named HieroglyphVM
+
+# Build rule for target.
+HieroglyphVM: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 HieroglyphVM
+.PHONY : HieroglyphVM
+
+# fast build rule for target.
+HieroglyphVM/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/build
+.PHONY : HieroglyphVM/fast
+
+src/chunk.obj: src/chunk.c.obj
+.PHONY : src/chunk.obj
+
+# target to build an object file
+src/chunk.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/chunk.c.obj
+.PHONY : src/chunk.c.obj
+
+src/chunk.i: src/chunk.c.i
+.PHONY : src/chunk.i
+
+# target to preprocess a source file
+src/chunk.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/chunk.c.i
+.PHONY : src/chunk.c.i
+
+src/chunk.s: src/chunk.c.s
+.PHONY : src/chunk.s
+
+# target to generate assembly for a file
+src/chunk.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/chunk.c.s
+.PHONY : src/chunk.c.s
+
+src/disassembler.obj: src/disassembler.c.obj
+.PHONY : src/disassembler.obj
+
+# target to build an object file
+src/disassembler.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/disassembler.c.obj
+.PHONY : src/disassembler.c.obj
+
+src/disassembler.i: src/disassembler.c.i
+.PHONY : src/disassembler.i
+
+# target to preprocess a source file
+src/disassembler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/disassembler.c.i
+.PHONY : src/disassembler.c.i
+
+src/disassembler.s: src/disassembler.c.s
+.PHONY : src/disassembler.s
+
+# target to generate assembly for a file
+src/disassembler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/disassembler.c.s
+.PHONY : src/disassembler.c.s
+
+src/loader.obj: src/loader.c.obj
+.PHONY : src/loader.obj
+
+# target to build an object file
+src/loader.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/loader.c.obj
+.PHONY : src/loader.c.obj
+
+src/loader.i: src/loader.c.i
+.PHONY : src/loader.i
+
+# target to preprocess a source file
+src/loader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/loader.c.i
+.PHONY : src/loader.c.i
+
+src/loader.s: src/loader.c.s
+.PHONY : src/loader.s
+
+# target to generate assembly for a file
+src/loader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/loader.c.s
+.PHONY : src/loader.c.s
+
+src/main.obj: src/main.c.obj
+.PHONY : src/main.obj
+
+# target to build an object file
+src/main.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/main.c.obj
+.PHONY : src/main.c.obj
+
+src/main.i: src/main.c.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/main.c.i
+.PHONY : src/main.c.i
+
+src/main.s: src/main.c.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/main.c.s
+.PHONY : src/main.c.s
+
+src/memory.obj: src/memory.c.obj
+.PHONY : src/memory.obj
+
+# target to build an object file
+src/memory.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/memory.c.obj
+.PHONY : src/memory.c.obj
+
+src/memory.i: src/memory.c.i
+.PHONY : src/memory.i
+
+# target to preprocess a source file
+src/memory.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/memory.c.i
+.PHONY : src/memory.c.i
+
+src/memory.s: src/memory.c.s
+.PHONY : src/memory.s
+
+# target to generate assembly for a file
+src/memory.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/memory.c.s
+.PHONY : src/memory.c.s
+
+src/value.obj: src/value.c.obj
+.PHONY : src/value.obj
+
+# target to build an object file
+src/value.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/value.c.obj
+.PHONY : src/value.c.obj
+
+src/value.i: src/value.c.i
+.PHONY : src/value.i
+
+# target to preprocess a source file
+src/value.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/value.c.i
+.PHONY : src/value.c.i
+
+src/value.s: src/value.c.s
+.PHONY : src/value.s
+
+# target to generate assembly for a file
+src/value.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/value.c.s
+.PHONY : src/value.c.s
+
+src/vm.obj: src/vm.c.obj
+.PHONY : src/vm.obj
+
+# target to build an object file
+src/vm.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/vm.c.obj
+.PHONY : src/vm.c.obj
+
+src/vm.i: src/vm.c.i
+.PHONY : src/vm.i
+
+# target to preprocess a source file
+src/vm.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/vm.c.i
+.PHONY : src/vm.c.i
+
+src/vm.s: src/vm.c.s
+.PHONY : src/vm.s
+
+# target to generate assembly for a file
+src/vm.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HieroglyphVM.dir/build.make CMakeFiles/HieroglyphVM.dir/src/vm.c.s
+.PHONY : src/vm.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -124,6 +305,28 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... HieroglyphVM"
+	@echo "... src/chunk.obj"
+	@echo "... src/chunk.i"
+	@echo "... src/chunk.s"
+	@echo "... src/disassembler.obj"
+	@echo "... src/disassembler.i"
+	@echo "... src/disassembler.s"
+	@echo "... src/loader.obj"
+	@echo "... src/loader.i"
+	@echo "... src/loader.s"
+	@echo "... src/main.obj"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/memory.obj"
+	@echo "... src/memory.i"
+	@echo "... src/memory.s"
+	@echo "... src/value.obj"
+	@echo "... src/value.i"
+	@echo "... src/value.s"
+	@echo "... src/vm.obj"
+	@echo "... src/vm.i"
+	@echo "... src/vm.s"
 .PHONY : help
 
 

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "loader.h"
 #include "memory.h"
@@ -22,7 +23,11 @@ Chunk *loadFile(Chunk *chunk, const char *filePath)
 
   initChunk(chunk);
 
-  // Load constants
+  ValueArray va;
+
+  initValueArray(&va);
+
+  int skipLen = 0;
   for (int i = 0; i < filelen; i++)
   {
     if (i == 0)
@@ -43,7 +48,7 @@ Chunk *loadFile(Chunk *chunk, const char *filePath)
     if (i == 4)
     { // read constant length
       int constantLen = _a_2btos(buffer, i);
-      i++;
+      i += 2;
 
       for (int j = 0; j < constantLen; j++)
       {
@@ -52,11 +57,20 @@ Chunk *loadFile(Chunk *chunk, const char *filePath)
           i++;
           int v = _a_4btoi(buffer, i);
 
-          addConstant(&chunk, INT_VAL(v));
-          break;
+          writeValueArray(&va, INT_VAL(v));
+          i += 4;
         }
       }
+
+      skipLen = i;
+      break;
     }
+  }
+
+  chunk->constants = va;
+
+  for(int i = skipLen; i < filelen; i++) {
+    writeChunk0(chunk, buffer[i]);
   }
 
   return chunk;

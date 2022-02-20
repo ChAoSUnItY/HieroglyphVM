@@ -9,6 +9,7 @@
 typedef struct {
   Chunk* chunk;
   u8* ip;
+  int line;
   Value stack[STACK_MAX];
   Value* stackTop;
 } VM;
@@ -19,6 +20,7 @@ void initVM();
 void freeVM();
 InterpretResult interpret(Chunk* chunk);
 void push(Value value);
+Value peek(int distance);
 Value pop();
 InterpretResult run();
 

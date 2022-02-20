@@ -3,6 +3,7 @@
 *.swn
 *.o
 *.cmake
+*.exe
 .vscode/
 bin/
 debug/
