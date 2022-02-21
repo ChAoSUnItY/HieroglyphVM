@@ -5,6 +5,10 @@
 #include "value.h"
 
 typedef enum {
+  V1_0,
+} Version;
+
+typedef enum {
   OP_CONST,
   OP_DUMP,
   OP_NEG,

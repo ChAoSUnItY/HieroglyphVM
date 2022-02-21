@@ -12,6 +12,7 @@ Chunk* loadFileFromBytecode(Chunk* chunk, u8 bytecode[], int len) {
   initValueArray(&va);
 
   int skipLen = 0;
+  int version = 0;
   for (int i = 0; i < len; i++) {
     if (i == 0) { // Check magic numbers
       if (bytecode[0] == 'C' && bytecode[1] == 'A' && bytecode[2] == 'S' &&
@@ -24,7 +25,13 @@ Chunk* loadFileFromBytecode(Chunk* chunk, u8 bytecode[], int len) {
       }
     }
 
-    if (i == 4) { // read constant length
+    if (i == 4) {
+      version = _a_2btos(bytecode, i);
+   
+      i += 2;
+    }
+
+    if (i == 6) { // read constant length
       int constantLen = _a_2btos(bytecode, i);
       i += 2;
 
