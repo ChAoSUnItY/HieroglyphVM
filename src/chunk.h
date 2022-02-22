@@ -10,6 +10,8 @@ typedef enum {
 
 typedef enum {
   OP_CONST,
+  OP_CONST_0,
+  OP_CONST_1,
   OP_DUMP,
   OP_NEG,
   OP_ADD,

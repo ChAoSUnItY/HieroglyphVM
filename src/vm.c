@@ -100,7 +100,7 @@ InterpretResult run() {
       if (vm.terminate) break;
 
       if (IS_INT(v)) {
-        printf("%d\n", AS_INT(v);
+        printf("%d\n", AS_INT(v));
       } else if (IS_BOOL(v)) {
         printf("%s\n", AS_BOOL(v) ? "true" : "false");
       }
