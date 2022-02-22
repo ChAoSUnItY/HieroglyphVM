@@ -113,4 +113,5 @@ InterpretResult run() {
 
 #undef READ_BYTE
 #undef READ_CONSTANT
+#undef ARITHMETIC_BINARY_OP
 }
