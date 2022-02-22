@@ -61,7 +61,7 @@ Value pop() {
 InterpretResult run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
-#define BINARY_OP(op) \
+#define ARITHMETIC_BINARY_OP(op) \
   { \
     if (IS_INT(peek(0)) && IS_INT(peek(1))) { \
       int b = AS_INT(pop()); \
@@ -93,10 +93,10 @@ InterpretResult run() {
       }
       push(INT_VAL(-AS_INT(pop())));
       break;
-    case OP_ADD: BINARY_OP(+); break;
-    case OP_SUB: BINARY_OP(-); break;
-    case OP_MUL: BINARY_OP(*); break;
-    case OP_DIV: BINARY_OP(/); break;
+    case OP_ADD: ARITHMETIC_BINARY_OP(+); break;
+    case OP_SUB: ARITHMETIC_BINARY_OP(-); break;
+    case OP_MUL: ARITHMETIC_BINARY_OP(*); break;
+    case OP_DIV: ARITHMETIC_BINARY_OP(/); break;
     case OP_REM:
     {
       runtimeError("Not implemented");
