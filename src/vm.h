@@ -25,7 +25,8 @@ void freeVM();
 InterpretResult loadAndInterpret(u8 bytecode[], int len);
 InterpretResult interpret(Chunk* chunk);
 void push(Value value);
-Value peek(int distance);
+bool assertOperands(size_t count);
+Value peek(int offset);
 Value pop();
 InterpretResult run();
 

@@ -19,6 +19,9 @@ typedef enum {
   OP_MUL,
   OP_DIV,
   OP_REM,
+  OP_L_NOT,
+  OP_L_OR,
+  OP_L_AND,
   OP_RETURN,
 } OpCode;
 
