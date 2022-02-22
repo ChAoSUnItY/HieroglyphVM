@@ -22,6 +22,12 @@ typedef enum {
   OP_L_NOT,
   OP_L_OR,
   OP_L_AND,
+  OP_EQ,
+  OP_NQ,
+  OP_GT,
+  OP_GE,
+  OP_LT,
+  OP_LE,
   OP_RETURN,
 } OpCode;
 

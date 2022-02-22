@@ -105,6 +105,19 @@ InterpretResult run() {
       push(BOOL_VAL(a op b)); \
     } else { \
       runtimeError("Cannot apply operator `%s` on `%s` and `%s`", #opName, peek(0).type, peek(1).type); \
+      return INTERPRET_ERROR; \
+    } \
+  }
+#define CMP_BINARY_OP(op, opName) \
+  { \
+    if (!assertOperands(2)) break; \
+    if (IS_INT(peek(0)) && IS_INT(peek(0))) { \
+      int b = AS_INT(pop()); \
+      int a = AS_INT(pop()); \
+      push(BOOL_VAL(a op b)); \
+    } else { \
+      runtimeError("Cannot apply operator `%s` on `%s` and `%s`", #opName, peek(0).type, peek(1).type); \
+      return INTERPRET_ERROR; \
     } \
   }
 
@@ -152,6 +165,12 @@ InterpretResult run() {
       break;
     case OP_L_OR: LOGICAL_BINARY_OP(||, logical or); break;
     case OP_L_AND: LOGICAL_BINARY_OP(&&, logical and); break;
+    case OP_EQ: CMP_BINARY_OP(==, equal); break;
+    case OP_NQ: CMP_BINARY_OP(!=, not equal); break;
+    case OP_GT: CMP_BINARY_OP(>, greater); break;
+    case OP_GE: CMP_BINARY_OP(>=, greater equal); break;
+    case OP_LT: CMP_BINARY_OP(<, lesser); break;
+    case OP_LE: CMP_BINARY_OP(<=, lesser equal); break;
     case OP_RETURN: {
       return INTERPRET_OK;
     }
@@ -168,4 +187,6 @@ InterpretResult run() {
 #undef READ_BYTE
 #undef READ_CONSTANT
 #undef ARITHMETIC_BINARY_OP
+#undef LOGICAL_BINARY_OP
+#undef CMP_BINARY_OP
 }
