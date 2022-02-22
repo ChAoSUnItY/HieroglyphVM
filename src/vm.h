@@ -1,6 +1,8 @@
 #ifndef HVM_VM_H
 #define HVM_VM_H
 
+#include <stdbool.h>
+
 #include "chunk.h"
 #include "value.h"
 
@@ -10,8 +12,10 @@ typedef struct {
   Chunk* chunk;
   u8* ip;
   int line;
+  int stackCount;
   Value stack[STACK_MAX];
   Value* stackTop;
+  bool terminate;
 } VM;
 
 typedef enum { INTERPRET_OK, INTERPRET_ERROR } InterpretResult;

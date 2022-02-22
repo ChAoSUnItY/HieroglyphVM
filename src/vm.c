@@ -8,7 +8,10 @@
 
 VM vm;
 
-static void resetStack() { vm.stackTop = vm.stack; }
+static void resetStack() {
+  vm.stackTop = vm.stack; 
+  vm.stackCount = 0;
+}
 
 static void runtimeError(const char* format, ...) {
   va_list args;
@@ -22,7 +25,10 @@ static void runtimeError(const char* format, ...) {
   resetStack();
 }
 
-void initVM() { resetStack(); }
+void initVM() {
+  resetStack();
+  vm.terminate = 0;
+}
 
 void freeVM() {}
 
@@ -48,13 +54,18 @@ InterpretResult interpret(Chunk* chunk) {
 
 void push(Value value) {
   *vm.stackTop = value;
-  vm.stackTop++;
+  vm.stackTop += vm.stackCount += 1;
 }
 
 Value peek(int distance) { return vm.stackTop[-1 - distance]; }
 
 Value pop() {
-  vm.stackTop--;
+  if (!vm.stackCount) {
+    runtimeError("Invalid operand. No operands on stack.");
+    vm.terminate = 1;
+  }
+
+  vm.stackTop -= vm.stackCount -= 1;
   return *vm.stackTop;
 }
 
@@ -81,11 +92,20 @@ InterpretResult run() {
       push(constant);
       break;
     }
-    case OP_DUMP:
-      if (IS_INT(peek(0))) {
-        printf("%d\n", AS_INT(pop()));
+    case OP_CONST_0: push(BOOL_VAL(false)); break;
+    case OP_CONST_1: push(BOOL_VAL(true)); break;
+    case OP_DUMP: {
+      Value v = pop();
+
+      if (vm.terminate) break;
+
+      if (IS_INT(v)) {
+        printf("%d\n", AS_INT(v);
+      } else if (IS_BOOL(v)) {
+        printf("%s\n", AS_BOOL(v) ? "true" : "false");
       }
       break;
+    }
     case OP_NEG:
       if (!IS_INT(peek(0))) {
         runtimeError("Operand must be a number.");
@@ -106,9 +126,13 @@ InterpretResult run() {
       return INTERPRET_OK;
     }
     case ATTR_LINE: {
-      vm.line = _4btoi(vm.ip);
+      vm.line = _2btos(vm.ip);
+      break;    
     }
     }
+
+    if (vm.terminate)
+      return INTERPRET_ERROR;
   }
 
 #undef READ_BYTE
