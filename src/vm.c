@@ -96,25 +96,17 @@ InterpretResult run() {
       return INTERPRET_ERROR; \
     } \
   }
-#define LOGICAL_BINARY_OP(op, opName) \
+#define IF_CMP(op, opName) \
   { \
     if (!assertOperands(2)) break; \
-    if (IS_BOOL(peek(0)) && IS_BOOL(peek(1))) { \
-      bool b = AS_BOOL(pop()); \
-      bool a = AS_BOOL(pop()); \
-      push(BOOL_VAL(a op b)); \
-    } else { \
-      runtimeError("Cannot apply operator `%s` on `%s` and `%s`", #opName, peek(0).type, peek(1).type); \
-      return INTERPRET_ERROR; \
-    } \
-  }
-#define CMP_BINARY_OP(op, opName) \
-  { \
-    if (!assertOperands(2)) break; \
-    if (IS_INT(peek(0)) && IS_INT(peek(0))) { \
+    if ((IS_INT(peek(0)) || IS_NIL(peek(0))) && (IS_INT(peek(1)) || IS_NIL(peek(1)))) { \
       int b = AS_INT(pop()); \
       int a = AS_INT(pop()); \
-      push(BOOL_VAL(a op b)); \
+      bool result = a op b; \
+      int byteOffset = _2btos(vm.ip); \
+      if (result) { \
+        vm.ip = vm.chunk->code + byteOffset; \
+      } \
     } else { \
       runtimeError("Cannot apply operator `%s` on `%s` and `%s`", #opName, peek(0).type, peek(1).type); \
       return INTERPRET_ERROR; \
@@ -129,15 +121,19 @@ InterpretResult run() {
       push(constant);
       break;
     }
-    case OP_CONST_0: push(BOOL_VAL(false)); break;
-    case OP_CONST_1: push(BOOL_VAL(true)); break;
+    case OP_CONST_0: push(BYTE_VAL(false)); break;
+    case OP_CONST_1: push(BYTE_VAL(true)); break;
+    case OP_CONST_NIL: push(NIL_VAL()); break;
     case OP_DUMP: {
       if (!assertOperands(1)) break;
 
       if (IS_INT(peek(0))) {
         printf("%d\n", AS_INT(pop()));
-      } else if (IS_BOOL(peek(0))) {
-        printf("%s\n", AS_BOOL(pop()) ? "true" : "false");
+      } else if (IS_BYTE(peek(0))) {
+        printf("%s\n", AS_BYTE(pop()) ? "true" : "false");
+      } else if (IS_NIL(peek(0))) {
+        pop();
+        printf("nil\n");
       }
       break;
     }
@@ -154,23 +150,17 @@ InterpretResult run() {
     case OP_MUL: ARITHMETIC_BINARY_OP(*, multiply); break;
     case OP_DIV: ARITHMETIC_BINARY_OP(/, slash); break;
     case OP_REM: ARITHMETIC_BINARY_OP(%, remainder); break;
-    case OP_L_NOT:
-      if (!assertOperands(1)) break;
-
-      if (!IS_BOOL(peek(0))) {
-        runtimeError("Cannot apply operation `logical not` on `%s`", peek(0).type);
-        return INTERPRET_ERROR;
-      } else push(BOOL_VAL(!AS_BOOL(pop())));
-
+    case OP_GOTO: {
+      int byteOffset = _2btos(vm.ip);
+      vm.ip = vm.chunk->code + byteOffset;
       break;
-    case OP_L_OR: LOGICAL_BINARY_OP(||, logical or); break;
-    case OP_L_AND: LOGICAL_BINARY_OP(&&, logical and); break;
-    case OP_EQ: CMP_BINARY_OP(==, equal); break;
-    case OP_NQ: CMP_BINARY_OP(!=, not equal); break;
-    case OP_GT: CMP_BINARY_OP(>, greater); break;
-    case OP_GE: CMP_BINARY_OP(>=, greater equal); break;
-    case OP_LT: CMP_BINARY_OP(<, lesser); break;
-    case OP_LE: CMP_BINARY_OP(<=, lesser equal); break;
+    }
+    case OP_IFEQ: IF_CMP(==, equal); break;
+    case OP_IFNE: IF_CMP(!=, not equal); break;
+    case OP_IFGT: IF_CMP(>, greater); break;
+    case OP_IFGE: IF_CMP(>=, greater equal); break;
+    case OP_IFLT: IF_CMP(<, lesser); break;
+    case OP_IFLE: IF_CMP(<=, lesser equal); break;
     case OP_RETURN: {
       return INTERPRET_OK;
     }

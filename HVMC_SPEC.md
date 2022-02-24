@@ -81,5 +81,22 @@
 ## Constant pool
 
 | Constant Name | Total size | Startup byte | Followed bytes |
-|:-:|:-:|:-:|:-:|
+|:-------------:|:----------:|:------------:|:--------------:|
 | Integer | 5 bytes | 0x00 | u1, u1, u1, u1 |
+
+## Bytecode Instructions (Opcodes)
+
+| Name | Opcode <br/> (in hex) | Followed bytes <br/> [count]: [operand labels] | Stack <br/> [before] -> [after] | Description |
+|:----:|:---------------------:|:----------------------------------------------:|:-------------------------------:|:-----------:|
+| CONST | 00 | 4: indexbyte1, indexbyte2, indexbyte3, indexbyte4 | → value | Loads a value from constant pool and push |
+| CONST_0 | 01 | | → `false` aka 0 | Loads a `false` and push |
+| CONST_1 | 02 | | → `true` aka 1 | Loads a `true` and push |
+| CONST_NIL | 03 | | → `nil` aka 0 | Loads a `nil` and push |
+| DUMP | 04 | | value → | Pop a value and print out |
+| NEG | 05 | | value → result | Negate value |
+| ADD | 06 | | value1, value2 → result | Add value1 and value2 |
+| SUB | 07 | | value1, value2 → result | Subtract value1 and value2 |
+| MUL | 08 | | value1, value2 → result | Multiply value1 and value2 |
+| DIV | 09 | | value1, value2 → result | Divide value1 and value2 |
+| REM | 0A | | value1, value2 → result | Mod value1 and value2 |
+
